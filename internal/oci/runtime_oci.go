@@ -329,7 +329,7 @@ func (r *runtimeOCI) CreateContainer(ctx context.Context, c *Container, cgroupPa
 						// We need to find the occurrence of ".log" that is preceded by "log file: " and then extract
 						// the path from there.
 						logFile := ""
-						split := strings.Split(ss.si.Message, "log file:")
+						split := strings.Split(ss.si.Message, "log file: ")
 						if len(split) > 1 {
 							logFile = split[1]
 							split = strings.Split(logFile, ".log")
@@ -338,8 +338,12 @@ func (r *runtimeOCI) CreateContainer(ctx context.Context, c *Container, cgroupPa
 								// We need to add .log back to the end of the path
 								logFile += ".log"
 								// Copy the log file to tmp storage
-								CopyFile(logFile, "/tmp/criu-fails"+logFile)
-								log.Infof(ctx, "Copied the log file to /tmp/criu-fails%s", logFile)
+								err := CopyFile(logFile, "/tmp/criu-fails"+logFile)
+								if err != nil {
+									log.Errorf(ctx, "Failed to copy log file to /tmp/criu-fails%s: %v", logFile, err)
+								} else {
+									log.Infof(ctx, "Copied the log file to /tmp/criu-fails%s", logFile)
+								}
 							}
 						}
 					}
