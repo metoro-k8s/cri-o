@@ -82,6 +82,37 @@ type exitCodeInfo struct {
 	Message  string `json:"message,omitempty"`
 }
 
+func CopyFile(src, dest string) error {
+	// Open the source file
+	sourceFile, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer sourceFile.Close()
+
+	// Create the destination directory if it does not exist
+	destDir := filepath.Dir(dest)
+	err = os.MkdirAll(destDir, 0755)
+	if err != nil {
+		return err
+	}
+
+	// Create the destination file
+	destFile, err := os.Create(dest)
+	if err != nil {
+		return err
+	}
+	defer destFile.Close()
+
+	// Copy the contents of the source file to the destination file
+	_, err = io.Copy(destFile, sourceFile)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // CreateContainer creates a container.
 func (r *runtimeOCI) CreateContainer(ctx context.Context, c *Container, cgroupParent string, restore bool) (retErr error) {
 	ctx, span := log.StartSpan(ctx)
@@ -289,6 +320,29 @@ func (r *runtimeOCI) CreateContainer(ctx context.Context, c *Container, cgroupPa
 			if ss.si.Message != "" {
 				if restore {
 					log.Errorf(ctx, "Container restore error: %s", ss.si.Message)
+					// If the message contains "criu failed", we can assume that the restore failed.
+					if strings.Contains(ss.si.Message, "criu failed") {
+						// We want to save the log file to tmp storage if the restore failed.
+						// The log file path is in the message after "log file: ".
+						// It always ends in ".log" but there may be other content after .log that we need to ignore
+						// when extracting the path.
+						// We need to find the occurrence of ".log" that is preceded by "log file: " and then extract
+						// the path from there.
+						logFile := ""
+						split := strings.Split(ss.si.Message, "log file:")
+						if len(split) > 1 {
+							logFile = split[1]
+							split = strings.Split(logFile, ".log")
+							if len(split) > 1 {
+								logFile = split[0]
+								// We need to add .log back to the end of the path
+								logFile += ".log"
+								// Copy the log file to tmp storage
+								CopyFile(logFile, "/tmp/criu-fails"+logFile)
+								log.Infof(ctx, "Copied the log file to /tmp/criu-fails%s", logFile)
+							}
+						}
+					}
 					return fmt.Errorf("container restore failed: %s", ss.si.Message)
 				}
 				log.Errorf(ctx, "Container creation error: %s", ss.si.Message)
