@@ -96,7 +96,7 @@ func (s *Server) CheckpointContainer(ctx context.Context, req *types.CheckpointC
 				Container: ctr.ID(),
 				ContainerCheckpointOptions: libpod.ContainerCheckpointOptions{
 					TargetFile:  filepath.Join(podCheckpointDirectory, ctr.Name()+".tar"),
-					KeepRunning: true,
+					KeepRunning: false,
 				},
 			}
 			opts = append(opts, localOpts)
@@ -117,7 +117,7 @@ func (s *Server) CheckpointContainer(ctx context.Context, req *types.CheckpointC
 				TargetFile: req.Location,
 				// For the forensic container checkpointing use case we
 				// keep the container running after checkpointing it.
-				KeepRunning: true,
+				KeepRunning: false,
 			},
 		}
 		opts = append(opts, localOpts)
