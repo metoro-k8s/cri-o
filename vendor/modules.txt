@@ -503,10 +503,13 @@ github.com/cockroachdb/apd/v2
 # github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
 ## explicit
 github.com/common-nighthawk/go-figure
-# github.com/container-orchestrated-devices/container-device-interface v0.5.3
+# github.com/container-orchestrated-devices/container-device-interface v0.6.0
 ## explicit; go 1.17
 github.com/container-orchestrated-devices/container-device-interface/internal/multierror
+github.com/container-orchestrated-devices/container-device-interface/internal/validation
+github.com/container-orchestrated-devices/container-device-interface/internal/validation/k8s
 github.com/container-orchestrated-devices/container-device-interface/pkg/cdi
+github.com/container-orchestrated-devices/container-device-interface/pkg/parser
 github.com/container-orchestrated-devices/container-device-interface/specs-go
 # github.com/containerd/cgroups v1.0.5-0.20220816231112-7083cd60b721
 ## explicit; go 1.17
@@ -1783,7 +1786,7 @@ github.com/opencontainers/runc/libcontainer/devices
 github.com/opencontainers/runc/libcontainer/user
 github.com/opencontainers/runc/libcontainer/userns
 github.com/opencontainers/runc/libcontainer/utils
-# github.com/opencontainers/runtime-spec v1.0.3-0.20220825212826-86290f6a00fb
+# github.com/opencontainers/runtime-spec v1.1.0-rc.1
 ## explicit
 github.com/opencontainers/runtime-spec/specs-go
 # github.com/opencontainers/runtime-tools v0.9.1-0.20230110161035-a6a073817ab0

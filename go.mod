@@ -8,7 +8,7 @@ require (
 	github.com/blang/semver/v4 v4.0.0
 	github.com/checkpoint-restore/checkpointctl v0.0.0-20220321135231-33f4a66335f0
 	github.com/checkpoint-restore/go-criu/v6 v6.3.0
-	github.com/container-orchestrated-devices/container-device-interface v0.5.3
+	github.com/container-orchestrated-devices/container-device-interface v0.6.0
 	github.com/containerd/cgroups v1.0.5-0.20220816231112-7083cd60b721
 	github.com/containerd/containerd v1.7.0-beta.0
 	github.com/containerd/cri-containerd v1.19.0
@@ -51,7 +51,7 @@ require (
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/opencontainers/image-spec v1.1.0-rc2.0.20221005185240-3a7f492d3f1b
 	github.com/opencontainers/runc v1.1.4
-	github.com/opencontainers/runtime-spec v1.0.3-0.20220825212826-86290f6a00fb
+	github.com/opencontainers/runtime-spec v1.1.0-rc.1
 	github.com/opencontainers/runtime-tools v0.9.1-0.20230110161035-a6a073817ab0
 	github.com/opencontainers/selinux v1.10.2
 	github.com/prometheus/client_golang v1.14.0
