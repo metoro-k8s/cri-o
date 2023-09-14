@@ -1,5 +1,4 @@
 //go:build !windows
-// +build !windows
 
 /*
    Copyright The containerd Authors.
@@ -28,4 +27,8 @@ func newDefaultMatcher(platform specs.Platform) Matcher {
 	return &matcher{
 		Platform: Normalize(platform),
 	}
+}
+
+func GetWindowsOsVersion() string {
+	return ""
 }
