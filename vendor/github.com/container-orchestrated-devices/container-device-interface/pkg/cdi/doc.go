@@ -46,7 +46,6 @@
 //      "fmt"
 //      "strings"
 //
-//      "github.com/pkg/errors"
 //      log "github.com/sirupsen/logrus"
 //
 //      "github.com/container-orchestrated-devices/container-device-interface/pkg/cdi"
@@ -58,7 +57,7 @@
 //
 //      unresolved, err := cdi.GetRegistry().InjectDevices(spec, devices)
 //      if err != nil {
-//          return errors.Wrap(err, "CDI device injection failed")
+//          return fmt.Errorf("CDI device injection failed: %w", err)
 //      }
 //
 //      log.Debug("CDI-updated OCI Spec: %s", dumpSpec(spec))
@@ -90,7 +89,6 @@
 //      "fmt"
 //      "strings"
 //
-//      "github.com/pkg/errors"
 //      log "github.com/sirupsen/logrus"
 //
 //      "github.com/container-orchestrated-devices/container-device-interface/pkg/cdi"
@@ -115,7 +113,7 @@
 //
 //      unresolved, err := registry.InjectDevices(spec, devices)
 //      if err != nil {
-//          return errors.Wrap(err, "CDI device injection failed")
+//          return fmt.Errorf("CDI device injection failed: %w", err)
 //      }
 //
 //      log.Debug("CDI-updated OCI Spec: %s", dumpSpec(spec))
@@ -139,7 +137,7 @@
 // were loaded from. The later a directory occurs in the list of CDI
 // directories to scan, the higher priority Spec files loaded from that
 // directory are assigned to. When two or more Spec files define the
-// same device, conflict is resolved by chosing the definition from the
+// same device, conflict is resolved by choosing the definition from the
 // Spec file with the highest priority.
 //
 // The default CDI directory configuration is chosen to encourage
@@ -196,10 +194,10 @@
 //         return fmt.Errorf("failed to generate Spec name: %w", err)
 //     }
 //
-//     return registry.WriteSpec(spec, specName)
+//     return registry.SpecDB().WriteSpec(spec, specName)
 // }
 //
-// Similary, generating and later cleaning up transient Spec files can be
+// Similarly, generating and later cleaning up transient Spec files can be
 // done with code fragments similar to the following. These transient Spec
 // files are temporary Spec files with container-specific parametrization.
 // They are typically created before the associated container is created
@@ -241,7 +239,7 @@
 //         return fmt.Errorf("failed to generate Spec name: %w", err)
 //     }
 //
-//     return registry.WriteSpec(spec, specName)
+//     return registry.SpecDB().WriteSpec(spec, specName)
 // }
 //
 // func removeTransientSpec(ctr Container) error {
@@ -249,7 +247,7 @@
 //     transientID := getSomeSufficientlyUniqueIDForContainer(ctr)
 //     specName := cdi.GenerateNameForTransientSpec(vendor, class, transientID)
 //
-//     return registry.RemoveSpec(specName)
+//     return registry.SpecDB().RemoveSpec(specName)
 // }
 //
 // CDI Spec Validation
